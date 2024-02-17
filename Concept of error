@@ -1,0 +1,173 @@
+%% 1
+clear all
+close all
+format long
+
+%practice one
+%part one
+% a=2;
+x=[-5:0.01:5];
+%part two
+a=10^5;
+%part three 
+% x=4;
+% a=10^3;
+%the function
+f=@(x) a*exp(x);
+%Taylor series approximation %part one
+% t=@(x) a*(1+x+x.^2/2);
+% dt=@(x) 2*x + 2;
+%Taylor series approximation %part two
+t=@(x) a*(1+x+x.^2/2+x.^3/6+x.^4/24);
+dt=@(x) x.^3/3 + x.^2 + 2*x + 2;
+%absolute and relative error
+abs_err=abs(f(x)-t(x));
+rel_err=abs_err/abs(f(x));
+
+%plot
+figure(1)
+plot(x,f(x),'b','LineWidth',2)
+grid on
+figure(2)
+semilogy(x,abs_err,'r','LineWidth',2)
+grid on
+figure(3)
+plot(x,t(x),'k','LineWidth',2)
+grid on
+figure(4)
+plot(x,dt(x),'k','LineWidth',2)
+grid on
+
+%Interpretation of Result
+%If we go far from x=0 the derivative of tayolr approximation (t(x)) becomes
+% very large.
+%Thus, the absolute error becomes bigger. 
+%The values of absolute error in the x=0 region is very small because the
+%derivative  of tayolr approximation (t(x)) is small enough.
+
+%% 2
+clear all
+close all
+format long
+
+%practice two
+yex=1;
+yapprox=@(x) (exp(x)-1)./x;
+
+k=[0:0.001:20];
+h=10.^(-k);
+% the more k we get the smaller our h would be.
+%the absolute error
+abs_err=abs(yex-yapprox(h));
+
+
+%plot
+figure(1)
+semilogy(k,abs_err,'r','LineWidth',1)
+figure(2)
+plot(k,yapprox(h),'k','LineWidth',1)
+
+%Interpretation of result
+% as k increases, the approximation in yapprox becomes more accurate due to 
+% the smaller step sizes, and the absolute errors tend to decrease.
+
+%It is useless try to achieve an error smaller than machine epsilone.
+%Around k=8 in the figure (1), the round-off error starts to be dominant.
+%For steps larger and equal than 10^-16 is above machine epsilone for
+%MATLAB.
+%% 3
+clear all
+close all
+format long
+
+%practice three
+%part 1
+k=[0:0.001:20];
+
+%relative error
+%part one 
+rel_err_1=abs(((1+10.^(-k))-1)-10.^(-k))./abs(10.^(-k));
+%part two
+rel_err_2=abs(1+10.^(-k)-10.^(-k)-1)./abs(10.^(-k));
+
+%plot
+figure(1)
+semilogy(k,rel_err_1,'k','LineWidth',3)
+figure(2)
+semilogy(k,rel_err_2,'k','LineWidth',3)
+
+%Interpretation of result
+%In the k=0 the approximation is accurate uo to machine accuracy (10^(-16))
+%As k grows, the round-off error starts to be dominant(get larger in digits) and affects the
+%accuracy of approximation; and after k=-16 MATLAB is not able to continue
+%(distinguish the number) and remains in 1.
+%This shows that, in finite precision arithmetic, in general neither 
+%the commutative nor the associative property hold. 
+
+% % part 2
+% m=[1:10];
+% k=[0:0.01:20];
+%     for j=1:size(m,2)
+%     %relative error
+%     %part one 
+%     rel_err_1=abs(((10^(m(j))+10.^(-k))-10^(m(j)))-10.^(-k))./abs(10.^(-k));
+%     %part two
+%     rel_err_2=abs(10^(m(j))+10.^(-k)-10.^(-k)-10^(m(j)))./abs(10.^(-k));
+%     figure(j)
+%     semilogy(k,rel_err_1,'k','LineWidth',3)
+%     figure(j+1)
+%     semilogy(k,rel_err_2,'k','LineWidth',3)
+%     end
+%% 4
+clear all
+close all
+format long
+
+%practice four
+a=4;
+yex=sqrt(a);
+x0=2.5;
+tol=10^(-6);
+sol=x0;
+for i=1:20
+    xnew=1/2*(x0+a/x0);
+    rel_err=abs(x0-xnew)/abs(x0);
+    x0=xnew;
+    sol=[sol,x0];
+    if (rel_err<=tol)
+        break
+    end
+end
+sol
+rel_err_=abs(yex-sol)/abs(yex)
+%% 5
+clear all
+close all
+format long
+
+%practice five 
+a=4;
+yex=1/sqrt(a);
+x0=0.7;
+tol=10^(-6);
+sol=x0;
+for i=1:20
+    xnew=x0/2*(3-a*x0^2);
+    rel_err=abs(x0-xnew)/abs(x0);
+    x0=xnew;
+    sol=x0;
+        if (rel_err<=tol)
+            break
+        end
+end
+
+sol
+rel_err_=abs(yex-sol)/abs(yex)
+
+
+
+
+
+
+
+
